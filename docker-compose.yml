@@ -1,0 +1,13 @@
+
+services:
+  mongodb_db:
+    image: mongo:latest
+    container_name: digital_banking_mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data:
