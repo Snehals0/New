@@ -3,6 +3,10 @@ import numpy as np
 from sklearn.ensemble import IsolationForest # A simple anomaly detection model for demo
 import joblib # To save/load models
 
+import os
+_model_path = os.path.join(os.path.dirname(__file__), "model.joblib")
+_model = joblib.load(_model_path)
+
 # In a real application, you would load a pre-trained model here.
 # For the prototype, we'll simulate a simple detection logic or train a dummy model.
 
@@ -13,6 +17,12 @@ FEATURE_ORDER = [
     'mouse_avg_speed_px_per_s', 'mouse_avg_angle_change_rad', 'mouse_std_angle_change_rad',
     'session_duration_ms'
 ]
+
+def calculate_ml_based_risk_score(features):
+    vector = [features.get(f, 0.0) for f in FEATURE_ORDER]
+    score = _model.decision_function([vector])[0]
+    return 1 - score  # Higher = riskier
+
 
 # --- Simple Rule-Based Anomaly Detection (for initial prototype) ---
 def calculate_rule_based_risk_score(current_features, user_profile):
